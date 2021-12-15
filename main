@@ -1,0 +1,14 @@
+#!/bin/bash
+
+option=$1
+
+session_list=$(tmux list-session -F '#{session_attached} #{session_name}')
+if [[ $option == 'short' ]]; then
+  tmux list-session -F '#{session_attached} #{session_name}' |
+    awk '/^0/{print substr($2,0,1)}; /^1/{print "#[bold][" substr($2,0,8) "]#[nobold]"};' |
+    tr '\n' ' '; echo
+else
+  tmux list-session -F '#{session_attached} #{session_name}' |
+    awk '/^0/{print $2}; /^1/{print "#[bold][" $2 "]#[nobold]"};' |
+    tr '\n' ' '; echo
+fi
